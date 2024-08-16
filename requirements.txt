@@ -4,5 +4,4 @@ tensorflow
 Pillow
 numpy
 python-dotenv
-gunicorn
 gdown
