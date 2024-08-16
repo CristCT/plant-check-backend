@@ -16,7 +16,7 @@ Este es el backend para la aplicación **Plant Check**, un sistema que utiliza u
 │   ├── model.py           # Carga del modelo y definición de clases
 │   ├── routes.py          # Define las rutas de la API
 │   └── utils.py           # Funciones auxiliares para preprocesamiento de imágenes
-├── .env                    # Variables de entorno
+├── .env.example            # Archivo de ejemplo para variables de entorno
 ├── config.py               # Configuración de la aplicación
 ├── run.py                  # Script para iniciar la aplicación
 ├── requirements.txt        # Dependencias del proyecto
