@@ -1,8 +1,23 @@
-import tensorflow as tf
 import os
+import gdown
+import tensorflow as tf
 
-# Cargar el modelo usando la variable de entorno
-model_path = os.getenv('MODEL_PATH', 'default/path/to/model.h5')
+# Obtener la URL o el ID del archivo desde las variables de entorno
+model_id = os.getenv('GOOGLE_DRIVE_MODEL_ID')
+model_url = f'https://drive.google.com/uc?id={model_id}'
+model_path = os.getenv('MODEL_PATH', 'models/model.h5')
+
+def download_model():
+    if not os.path.exists('models'):
+        os.makedirs('models')
+
+    if not os.path.exists(model_path):
+        gdown.download(model_url, model_path, quiet=False)
+
+# Descargar el modelo si no existe
+download_model()
+
+# Cargar el modelo usando TensorFlow
 model = tf.keras.models.load_model(model_path)
 
 class_names = [
