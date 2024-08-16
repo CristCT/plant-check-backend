@@ -1,6 +1,7 @@
 import tensorflow as tf
 import os
 
+# Cargar el modelo usando la variable de entorno
 model_path = os.getenv('MODEL_PATH', 'default/path/to/model.h5')
 model = tf.keras.models.load_model(model_path)
 
