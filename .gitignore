@@ -8,3 +8,6 @@ venv/
 # Ignorar archivos compilados de Python
 *.pyc
 __pycache__/
+
+# Ignorar el archivo .env
+.env
