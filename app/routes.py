@@ -16,15 +16,19 @@ def predict():
     
     prediction = model.predict(img)
     predicted_class_index = np.argmax(prediction)
+
+    if predicted_class_index >= len(class_names):
+        return jsonify({'error': 'Predicted class index out of range'}), 500
+
     predicted_class_name = class_names[predicted_class_index]
     confidence = prediction[0][predicted_class_index]
 
     output_type = request.form.get('output_type', 'saludable')
 
     if output_type == 'saludable':
-        result = 'saludable' if predicted_class_name == 'Apple___healthy' else 'no saludable'
+        result = 'saludable' if 'healthy' in predicted_class_name else 'no saludable'
     elif output_type == 'problemas':
-        result = friendly_names.get(predicted_class_name, 'Unknown')
+        result = friendly_names.get(predicted_class_name, 'Problema desconocido')
 
     return jsonify({
         'result': result,
