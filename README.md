@@ -1,10 +1,10 @@
 # Plant Check Backend
 
-Este es el backend para la aplicación **Plant Check**, un sistema que utiliza un modelo de TensorFlow para predecir la salud de las hojas de manzana. El proyecto está desarrollado en Python utilizando Flask como framework web.
+Este es el backend para la aplicación **Plant Check**, un sistema que utiliza un modelo de TensorFlow para predecir la salud de las hojas. El proyecto está desarrollado en Python utilizando Flask como framework web.
 
 ## Características
 
-- **Predicciones de salud de hojas:** El backend recibe imágenes de hojas de manzana y utiliza un modelo de TensorFlow para predecir si la hoja está saludable o presenta alguna enfermedad.
+- **Predicciones de salud de hojas:** El backend recibe imágenes de hojas y utiliza un modelo de TensorFlow para predecir si la hoja está saludable o presenta alguna enfermedad.
 - **API REST:** Ofrece una API REST para interactuar con el modelo de predicción.
 - **Soporte CORS:** Implementación de CORS para permitir la comunicación con el frontend.
 
@@ -16,11 +16,13 @@ Este es el backend para la aplicación **Plant Check**, un sistema que utiliza u
 │   ├── model.py           # Carga del modelo y definición de clases
 │   ├── routes.py          # Define las rutas de la API
 │   └── utils.py           # Funciones auxiliares para preprocesamiento de imágenes
-├── .env.example            # Archivo de ejemplo para variables de entorno
-├── config.py               # Configuración de la aplicación
-├── run.py                  # Script para iniciar la aplicación
-├── requirements.txt        # Dependencias del proyecto
-└── Procfile                # Archivo para despliegue en Heroku
+├── models/                # Directorio con el modelo de TensorFlow (.h5)
+├── config.py              # Configuración de la aplicación
+├── class_names.json       # Nombres de las clases del modelo
+├── friendly_names.json    # Nombres amigables de las clases
+├── run.py                 # Script para iniciar la aplicación
+├── requirements.txt       # Dependencias del proyecto
+└── LICENSE                # Licencia del proyecto
 ```
 
 ## Requisitos
@@ -66,15 +68,7 @@ cd plant-check-backend
 pip install -r requirements.txt
 ```
 
-### 5. Configura las variables de entorno:
-
-Crea un archivo `.env` en la raíz del proyecto basado en el archivo `.env.example`. Establece la ruta correcta al modelo de TensorFlow:
-
-```plaintext
-MODEL_PATH='./modelo_salud_plantas.h5'
-```
-
-### 6. Ejecuta el backend:
+### 5. Ejecuta el backend:
 
 ```bash
 python run.py
@@ -85,7 +79,7 @@ python run.py
 ### Endpoint: `/predict`
 
 - **Método:** `POST`
-- **Descripción:** Recibe una imagen de una hoja de manzana y devuelve la predicción de su salud.
+- **Descripción:** Recibe una imagen de una hoja y devuelve la predicción de su salud.
 - **Parámetros:** 
   - `file`: Imagen de la hoja (requerido).
   - `output_type`: Tipo de salida (`saludable` o `problemas`). Por defecto es `saludable`.
