@@ -11,3 +11,6 @@ __pycache__/
 
 # Ignorar el archivo .env
 .env
+
+# Ignorar modelo .h5
+models/

@@ -1,6 +1,6 @@
 import tensorflow as tf
 import json
-from config import Config
+from app.config import Config
 
 # Ruta del modelo
 model_path = Config.MODEL_PATH
