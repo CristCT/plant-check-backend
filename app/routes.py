@@ -1,6 +1,7 @@
 from flask import request, jsonify, current_app as app
 from .model import model, class_names, friendly_names
 from .utils import preprocess_image
+from .db import get_db_connection
 from PIL import Image
 import io
 import numpy as np
@@ -34,3 +35,16 @@ def predict():
         'result': result,
         'confidence': float(confidence)
     })
+
+
+@app.route('/api/monitoreo_plantas', methods=['GET'])
+def fetch_monitoreo_plantas():
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM monitoreo_plantas WHERE valido=1"
+            cursor.execute(sql)
+            results = cursor.fetchall()
+        return jsonify(results)
+    finally:
+        connection.close()
