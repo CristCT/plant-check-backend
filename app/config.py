@@ -1,7 +1,8 @@
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
-load_dotenv()
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path=dotenv_path, override=True)
 
 class Config:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +15,7 @@ class Config:
     DB_HOST = os.getenv('DB_HOST', 'localhost')
     DB_USER = os.getenv('DB_USER', 'root')
     DB_PASSWORD = os.getenv('DB_PASSWORD', 'password')
-    DB_NAME = os.getenv('DB_NAME', 'monitoreo_plantas')
+    DB_NAME = os.getenv('DB_NAME', 'database')
 
 class DevelopmentConfig(Config):
     DEBUG = True
