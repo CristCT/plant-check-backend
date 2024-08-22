@@ -2,7 +2,7 @@ from flask import current_app as app
 from .predict_routes import handle_predict
 from .monitor_routes import handle_fetch_camara_data, handle_fetch_invernadero_data, handle_fetch_monitoreo_plantas_data, insert_monitoreo_plantas_data
 
-# Ruta para predicciones
+# Ruta para predicciones de plantas
 @app.route('/predict', methods=['POST'])
 def predict():
     return handle_predict()
