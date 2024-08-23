@@ -13,13 +13,13 @@ def handle_predict():
     img = Image.open(io.BytesIO(file.read()))
     img = preprocess_image(img)
     
-    use_trade_off_model = request.form.get('use_trade_off_model', 'true').lower() == 'true'
+    use_trade_off_model = request.form.get('model_trade_off', 'true').lower() == 'true'
     
     if use_trade_off_model:
         selected_model = model_trade_off
     else:
         selected_model = model
-    
+
     # Realizar la predicción usando el modelo seleccionado
     prediction = selected_model.predict(img)
     
@@ -34,14 +34,28 @@ def handle_predict():
     
     # Encontrar la predicción saludable y no saludable más probable
     healthy_prediction = next((pred for pred in top_5_predictions if 'healthy' in pred['class']), None)
-    unhealthy_prediction = next((pred for pred in top_5_predictions if 'healthy' not in pred['class']), None)
+    # Asegurarse de que la enfermedad esté relacionada con la misma planta
+    if healthy_prediction:
+        plant_type = healthy_prediction['class'].split('___')[0]
+        unhealthy_prediction = next((pred for pred in top_5_predictions if plant_type in pred['class'] and 'healthy' not in pred['class']), None)
+    else:
+        unhealthy_prediction = None
     
     if output_type == 'saludable':
         if healthy_prediction and healthy_prediction['probability'] > 0.9:
             result = 'Saludable'
             confidence = healthy_prediction['probability']
+        elif healthy_prediction and healthy_prediction['probability'] > 0.6:
+            if unhealthy_prediction:
+                result = f"Mayormente saludable, pero con signos de {friendly_names.get(unhealthy_prediction['class'], 'problema desconocido')}"
+            else:
+                result = f"Mayormente saludable ({friendly_names.get(plant_type + '___healthy', plant_type)})"
+            confidence = healthy_prediction['probability']
         elif healthy_prediction:
-            result = f"Mayormente saludable, pero con signos de {friendly_names.get(unhealthy_prediction['class'], 'problema desconocido')}"
+            if unhealthy_prediction:
+                result = f"Signos leves de salud, {friendly_names.get(unhealthy_prediction['class'], 'problema desconocido')}"
+            else:
+                result = "Signos leves de salud"
             confidence = healthy_prediction['probability']
         else:
             result = 'Planta no saludable'
@@ -52,7 +66,7 @@ def handle_predict():
             result = friendly_names.get(unhealthy_prediction['class'], 'Problema desconocido')
             confidence = unhealthy_prediction['probability']
         elif unhealthy_prediction:
-            result = f"Signos leves de {friendly_names.get(unhealthy_prediction['class'], 'problema desconocido')}"
+            result = f"Signos de {friendly_names.get(unhealthy_prediction['class'], 'problema desconocido')}"
             confidence = unhealthy_prediction['probability']
         else:
             result = 'No se detectaron problemas significativos'
